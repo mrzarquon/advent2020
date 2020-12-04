@@ -18,7 +18,6 @@ for line in inFile:
     else:
         p.append(list())
 
-# i'm sure there's a single regex for all this
 for i in range(0,len(p)):
     p[i] = ''.join(p[i])
     p[i] = p[i].rstrip()
@@ -27,6 +26,8 @@ for i in range(0,len(p)):
 df = pd.DataFrame(p, columns = ['byr','cid','ecl','eyr','hcl','hgt','iyr','pid'])
 
 df.dropna(subset=['byr','ecl','eyr','hcl','hgt','iyr','pid'], inplace=True)
+
+print('part 1: ', df.shape[0])
 
 objectTypes = {
     'byr': int,
@@ -39,8 +40,6 @@ objectTypes = {
 }
 
 df = df.astype(objectTypes, errors='ignore')
-
-print('part 1: ', df.shape[0])
 
 def validRange(year, minY: int, maxY: int):
     try:
