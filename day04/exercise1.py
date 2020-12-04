@@ -6,17 +6,18 @@ import pandas as pd
 import re
 from pprint import pprint
 
-inFile = open(sys.argv[1],"r").readlines()
-
+inFile = open(sys.argv[1],"r")
 
 p = list()
 p.append(list())
 
-for line in inFile:
+for line in inFile.readlines():
     if len(line) > 2:
         p[-1].append(line.replace('\n',' '))
     else:
         p.append(list())
+
+inFile.close()
 
 for i in range(0,len(p)):
     p[i] = ''.join(p[i])
