@@ -31,13 +31,17 @@ for key in rules:
     parsed = parseRule(rules[key]['rule'])
     rules[key] = parsed
 
-bags = ['shinygold']
-for bag in bags:
-    for rule in rules:
-        if any(bag in x for x in rules[rule]):
-            print(rule)
-            bags.append(rule)
 
-print(bags)
-results = sorted(set(bags))
-print(len(results)-1)
+
+def countBags(rule,bag):
+    enclosedBags = 0
+    if bool(rule[bag]):
+        print(bag,'has bags')
+        for enBag in rule[bag]:
+            mult = rule[bag][enBag]
+            count = countBags(rule,enBag)
+            enclosedBags += mult * count
+
+    return enclosedBags + 1
+
+print(countBags(rules,'shinygold'))
