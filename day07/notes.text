@@ -1,0 +1,23 @@
+{ 
+    'brightwhite': {
+        'shinygold': 1},
+    'darkolive': {
+        'dottedblack': 4, 
+        'fadedblue': 3},
+    'darkorange': {
+        'brightwhite': 3, 
+        'mutedyellow': 4},
+    'dottedblack': {},
+    'fadedblue': {},
+    'lightred': {
+        'brightwhite': 1, 
+        'mutedyellow': 2},
+    'mutedyellow': {
+        'fadedblue': 9, 
+        'shinygold': 2},
+    'shinygold': {
+        'darkolive': 1, 
+        'vibrantplum': 2},
+    'vibrantplum': {
+        'dottedblack': 6, 
+        'fadedblue': 5}}
