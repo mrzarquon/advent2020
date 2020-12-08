@@ -42,6 +42,9 @@ def countBags(rule,bag):
             count = countBags(rule,enBag)
             enclosedBags += mult * count
 
-    return enclosedBags + 1
+    if bag == 'shinygold':
+        return enclosedBags
+    else:
+        return enclosedBags + 1
 
 print(countBags(rules,'shinygold'))
