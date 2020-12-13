@@ -1,57 +1,24 @@
-import numpy
+# one to read thought later
 
+delta_force = [complex(x,y) for x in (-1,0,1) for y in (-1,0,1) if not x==y==0]
 
-def CountNeighbours(theInputMatrix,countRadius=1,borderValue=0.):
-    """CountNeighbours(theInputMatrix,countRadius,borderValue) spirals around theInputMatrix to produce resultMatrix: 
-    a matrix with the same dimensions as the input with with elements containing the sum of neighbour elements.
-    The radius of the neighbours to include is set with counterRadius (default = 1), the value for elements beyond
-    the borders is set with borderValue (default = 0.)."""
-    heightFP,widthFP = theInputMatrix.shape 
-    #define hight and width of input matrix
-    # make a matrix same size as input matrix plus borders the same size as the neighbour radius and
-    # set the border to borderValue
-    withBorders = numpy.ones((heightFP+(2*countRadius),widthFP+(2*countRadius)))*borderValue
-    # set the interior region to the input matrix
-    withBorders[countRadius:heightFP+countRadius,countRadius:widthFP+countRadius]=theInputMatrix
-    # set up an empty matrix for the results
-    
-    resultMatrix = numpy.zeros((heightFP,widthFP)) 
-    
-    minRow,minCol = 0,0
-    maxRow,maxCol = 2.*countRadius,2.*countRadius
-    rowVal,colVal = 0,0
-    # spiral round... 
-    for i in range(4*countRadius):
-        while colVal<maxCol: #move right along top of spiral
-            resultMatrix = resultMatrix + withBorders[rowVal:heightFP+rowVal,colVal:widthFP+colVal]
-            colVal += 1
- 
-        while rowVal<maxRow: #move down right hand side of spiral
-            resultMatrix = resultMatrix + withBorders[rowVal:heightFP+rowVal,colVal:widthFP+colVal]
-            rowVal += 1
- 
-        while colVal>minCol: #move left along base of spiral
-            resultMatrix = resultMatrix + withBorders[rowVal:heightFP+rowVal,colVal:widthFP+colVal]
-            colVal -= 1
-        minRow += 1
-        maxCol -= 1
-        while rowVal > minRow: #move up left hand side of spiral
-            resultMatrix = resultMatrix + withBorders[rowVal:heightFP+rowVal,colVal:widthFP+colVal]
-            rowVal -= 1
-        minCol += 1
-        maxRow -= 1
-    return resultMatrix
+def neighbors(floor,loc,queen):
+    for delta in delta_force:
+        nloc = loc + delta
+        while queen and nloc in floor and floor[nloc] == '.': nloc = nloc + delta
+        if nloc in floor and floor[nloc]=='#': yield 1
 
-####################################
-# small test #
-####################################
+def part(p, new_floor, floor = None):
+    while floor != new_floor:
+        floor = new_floor.copy()
+        for loc in ( x for x in floor if floor[x] != '.' ):
+            n = sum(neighbors(floor,loc,p))
+            if n > (3+p): new_floor[loc] = 'L'
+            elif n == 0: new_floor[loc] = '#'
+    print(f'part {p+1}: {sum(cell=="#" for cell in new_floor.values())}')
 
-#set up the input matrix
-theInputMatrix = numpy.array([(0., 0., 1., 1., 1.),(1., 1., 0., 0., 1.),(0., 1., 1., 0., 0.),(0., 0., 1., 0., 0.),(0., 1., 0., 1., 1.)])
+lines = ( list(s.strip()) for s in open(day_11_path).readlines() )
+lines = { complex(x,y): cell for x,row in enumerate(lines) for y,cell in enumerate(row) }
+part(0,lines.copy())
 
-countRadius = 1 #the radius of neighbour elements to include in the sum 
-borderValue = 0. #the value to assign to elements off the edges of the 'grid'
-
-resultMatrix = CountNeighbours(theInputMatrix,countRadius,borderValue) #call the function
-print(theInputMatrix)
-print(resultMatrix)
+part(1,lines.copy())

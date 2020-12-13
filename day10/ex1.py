@@ -5,6 +5,8 @@ import re
 import operator
 from pprint import pprint
 
+# knights dialer: https://hackernoon.com/google-interview-questions-deconstructed-the-knights-dialer-f780d516f029
+
 adp = open(sys.argv[1],"r").readlines()
 
 adp = [int(i.strip()) for i in adp]
